@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+//    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.google.protobuf' version '0.8.17'
+}
+
+group = 'com.moondahoon'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '11'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    implementation "com.google.api.grpc:proto-google-common-protos:0.1.9"
+
+
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+}
+
+

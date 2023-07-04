@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package com.moondahoon;
+
+//option java_multiple_files = true;
+
+service VehicleLocationService {
+  rpc Put (PutRequest) returns (PutResponse) {}
+  rpc Get (GetRequest) returns (GetResponse) {}
+  rpc Search (SearchRequest) returns (SearchResponse) {}
+  rpc History (HistoryRequest) returns (stream HistoryResponse) {}
+}
+
+message PutRequest {
+  string id = 1;
+  double latitude = 2;
+  double longitude = 3;
+}
+
+message PutResponse {
+  string id = 1;
+  string message = 2;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  string id = 1;
+  double latitude = 2;
+  double longitude = 3;
+}
+
+message SearchRequest {
+  double latitude = 1;
+  double longitude = 2;
+  double radius = 3;
+}
+
+message SearchResponse {
+  repeated VehicleInfo vehicles = 1;
+
+  message VehicleInfo {
+    string id = 1;
+    double latitude = 2;
+    double longitude = 3;
+  }
+}
+
+message HistoryRequest {
+  string id = 1;
+  int64 startTime = 2;
+  int64 endTime = 3;
+}
+
+message HistoryResponse {
+  string id = 1;
+  double latitude = 2;
+  double longitude = 3;
+  int64 timestamp = 4;
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'mobility'
+include 'mobility-proto'
+include 'mobility-server'
