@@ -33,7 +33,7 @@ public class VehicleLocationRepository {
 				.orElse(null);
 	}
 
-//	JPA에서는 query 직접 작성해줘야함
+//	JpaRepository 사용할 경우엔 @Query 직접 작성해줘야함
 	public List<VehicleLocation> findLatestForEachId() {
 		Map<String, VehicleLocation> latestLocationsMap = vehicleLocationList.stream()
 				.collect(Collectors.toMap(VehicleLocation::getId, Function.identity(),
@@ -49,7 +49,6 @@ public class VehicleLocationRepository {
 	}
 
 	public List<VehicleLocation> findByIdAndTimestampBetween(String id, LocalDateTime startTime, LocalDateTime endTime){
-		log.info("{} {}", vehicleLocationList.get(0).getId(), vehicleLocationList.get(0).getTimestamp());
 
 		return vehicleLocationList.stream()
 				.filter(vehicleLocation -> vehicleLocation.getId().equals(id)

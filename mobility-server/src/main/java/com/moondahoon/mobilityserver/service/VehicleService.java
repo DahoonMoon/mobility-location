@@ -33,8 +33,7 @@ public class VehicleService {
 		vehicleLocation.setTimestamp(LocalDateTime.now());
 
 		vehicleLocationRepository.save(vehicleLocation);
-
-		log.info("{} saved", vehicleLocation.getId());
+//		log.info("{} saved", vehicleLocation.getId());
 	}
 
 	public GetResponseDto getVehicleLocation(GetRequestDto requestDto) {

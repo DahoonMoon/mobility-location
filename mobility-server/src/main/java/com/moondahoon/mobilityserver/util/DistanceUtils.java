@@ -3,6 +3,7 @@ package com.moondahoon.mobilityserver.util;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import lombok.extern.slf4j.Slf4j;
 
 public class DistanceUtils {
 

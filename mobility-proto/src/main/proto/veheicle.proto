@@ -7,8 +7,8 @@ package com.moondahoon;
 
 service VehicleLocationService {
   rpc Put (PutRequest) returns (PutResponse) {}
-  rpc Get (GetRequest) returns (GetResponse) {}
-  rpc Search (SearchRequest) returns (SearchResponse) {}
+  rpc Get (GetRequest) returns (stream GetResponse) {}
+  rpc Search (SearchRequest) returns (stream SearchResponse) {}
   rpc History (HistoryRequest) returns (HistoryResponse) {}
 }
 

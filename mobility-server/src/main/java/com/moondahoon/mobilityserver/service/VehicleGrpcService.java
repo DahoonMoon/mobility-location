@@ -34,102 +34,120 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @RequiredArgsConstructor
 public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocationServiceImplBase {
 
-	private final VehicleService vehicleService;
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final VehicleService vehicleService;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-	@Override
-	public void put(PutRequest request, StreamObserver<PutResponse> responseObserver) {
+    @Override
+    public void put(PutRequest request, StreamObserver<PutResponse> responseObserver) {
 
-		PutRequestDto requestDto = PutRequestDto.builder()
-				.id(request.getId())
-				.latitude(BigDecimal.valueOf(request.getLatitude()))
-				.longitude(BigDecimal.valueOf(request.getLongitude()))
-				.build();
+        PutRequestDto requestDto = PutRequestDto.builder()
+            .id(request.getId())
+            .latitude(BigDecimal.valueOf(request.getLatitude()))
+            .longitude(BigDecimal.valueOf(request.getLongitude()))
+            .build();
 
-		vehicleService.putVehicleLocation(requestDto);
+        vehicleService.putVehicleLocation(requestDto);
 
-		PutResponse response = PutResponse.newBuilder()
-				.setSuccess(true)
-				.setId(requestDto.getId())
-				.setMessage("saved")
-				.build();
+        PutResponse response = PutResponse.newBuilder()
+            .setSuccess(true)
+            .setId(requestDto.getId())
+            .setMessage("saved")
+            .build();
 
-		responseObserver.onNext(response);
-		responseObserver.onCompleted();
-	}
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
-	@Override
-	public void get(GetRequest request, StreamObserver<GetResponse> responseObserver) {
+    @Override
+    public void get(GetRequest request, StreamObserver<GetResponse> responseObserver) {
 
-		GetRequestDto requestDto = new GetRequestDto(request.getId());
-		GetResponseDto response = vehicleService.getVehicleLocation(requestDto);
+        GetRequestDto requestDto = new GetRequestDto(request.getId());
 
-		try {
-			responseObserver.onNext(GetResponse.newBuilder()
-					.setId(response.getId())
-					.setLatitude(response.getLatitude().doubleValue())
-					.setLongitude(response.getLongitude().doubleValue())
-					.setTimestamp(response.getTimestamp().format(formatter))
-					.build());
-			responseObserver.onCompleted();
-		} catch (StatusRuntimeException e) {
-			throw Status.INVALID_ARGUMENT
-					.withDescription("Invalid argument")
-					.withCause(e)
-					.asRuntimeException();
-		}
-	}
+        while (true) {
+            GetResponseDto response = vehicleService.getVehicleLocation(requestDto);
 
-	@Override
-	public void search(SearchRequest request, StreamObserver<SearchResponse> responseObserver) {
+            responseObserver.onNext(GetResponse.newBuilder()
+                .setId(response.getId())
+                .setLatitude(response.getLatitude().doubleValue())
+                .setLongitude(response.getLongitude().doubleValue())
+                .setTimestamp(response.getTimestamp().format(formatter))
+                .build());
 
-		SearchRequestDto requestDto = SearchRequestDto.builder()
-				.latitude(BigDecimal.valueOf(request.getLatitude()))
-				.longitude(BigDecimal.valueOf(request.getLongitude()))
-				.radius(BigDecimal.valueOf(request.getRadius()))
-				.build();
-		List<SearchResponseDto> responseDtoList = vehicleService.searchVehicleLocation(requestDto);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                responseObserver.onError(Status.INTERNAL
+                    .withDescription("Error: interrupted during sleeping.")
+                    .asRuntimeException());
+                break;
+            }
+        }
+        responseObserver.onCompleted();
+    }
 
-		SearchResponse.Builder searchResponseBuilder = SearchResponse.newBuilder();
-		responseDtoList.forEach(res -> searchResponseBuilder.addVehicles(VehicleInfo.newBuilder()
-				.setId(res.getId())
-				.setLatitude(res.getLatitude().doubleValue())
-				.setLongitude(res.getLongitude().doubleValue())
-				.setDistance(res.getDistance().doubleValue())
-				.setTimestamp(res.getTimestamp().format(formatter))
-				.build())
-		);
-		SearchResponse searchResponse = searchResponseBuilder.build();
+    @Override
+    public void search(SearchRequest request, StreamObserver<SearchResponse> responseObserver) {
 
-		responseObserver.onNext(searchResponse);
-		responseObserver.onCompleted();
-	}
+        SearchRequestDto requestDto = SearchRequestDto.builder()
+            .latitude(BigDecimal.valueOf(request.getLatitude()))
+            .longitude(BigDecimal.valueOf(request.getLongitude()))
+            .radius(BigDecimal.valueOf(request.getRadius()))
+            .build();
+
+        while (true) {
+            List<SearchResponseDto> responseDtoList = vehicleService.searchVehicleLocation(requestDto);
+
+            SearchResponse.Builder searchResponseBuilder = SearchResponse.newBuilder();
+            responseDtoList.forEach(res -> searchResponseBuilder.addVehicles(VehicleInfo.newBuilder()
+                .setId(res.getId())
+                .setLatitude(res.getLatitude().doubleValue())
+                .setLongitude(res.getLongitude().doubleValue())
+                .setDistance(res.getDistance().doubleValue())
+                .setTimestamp(res.getTimestamp().format(formatter))
+                .build())
+            );
+            SearchResponse searchResponse = searchResponseBuilder.build();
+
+            responseObserver.onNext(searchResponse);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                responseObserver.onError(Status.INTERNAL
+                    .withDescription("Error: interrupted during sleeping.")
+                    .asRuntimeException());
+                break;
+            }
+        }
+        responseObserver.onCompleted();
+    }
 
 
-	@Override
-	public void history(HistoryRequest request, StreamObserver<HistoryResponse> responseObserver) {
-		HistoryRequestDto requestDto = HistoryRequestDto.builder()
-				.id(request.getId())
-				.startTime(LocalDateTime.parse(request.getStartTime(), formatter))
-				.endTime(LocalDateTime.parse(request.getEndTime(), formatter))
-				.build();
+    @Override
+    public void history(HistoryRequest request, StreamObserver<HistoryResponse> responseObserver) {
+        HistoryRequestDto requestDto = HistoryRequestDto.builder()
+            .id(request.getId())
+            .startTime(LocalDateTime.parse(request.getStartTime(), formatter))
+            .endTime(LocalDateTime.parse(request.getEndTime(), formatter))
+            .build();
 
-		List<HistoryResponseDto> responseDtoList = vehicleService.historyVehicleLocation(requestDto);
+        List<HistoryResponseDto> responseDtoList = vehicleService.historyVehicleLocation(requestDto);
 
-		HistoryResponse.Builder historyResponseBuilder = HistoryResponse.newBuilder();
-		responseDtoList.forEach(res -> historyResponseBuilder.addHistory(VehicleHistory.newBuilder()
-				.setId(res.getId())
-				.setLatitude(res.getLatitude().doubleValue())
-				.setLongitude(res.getLongitude().doubleValue())
-				.setTimestamp(res.getTimestamp().format(formatter))
-				.build())
-		);
+        HistoryResponse.Builder historyResponseBuilder = HistoryResponse.newBuilder();
+        responseDtoList.forEach(res -> historyResponseBuilder.addHistory(VehicleHistory.newBuilder()
+            .setId(res.getId())
+            .setLatitude(res.getLatitude().doubleValue())
+            .setLongitude(res.getLongitude().doubleValue())
+            .setTimestamp(res.getTimestamp().format(formatter))
+            .build())
+        );
 
-		HistoryResponse historyResponse = historyResponseBuilder.build();
+        HistoryResponse historyResponse = historyResponseBuilder.build();
 
-		responseObserver.onNext(historyResponse);
-		responseObserver.onCompleted();
-	}
+        responseObserver.onNext(historyResponse);
+        responseObserver.onCompleted();
+    }
 
 
 }
