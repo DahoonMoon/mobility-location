@@ -1,10 +1,9 @@
-package com.moondahoon.mobility.config;
+package com.moondahoon.mobilityserver.config;
 
-import com.moondahoon.mobility.service.VehicleLocationService;
+import com.moondahoon.mobilityserver.service.VehicleGrpcService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class GrpcServerConfig {
 
-	private final VehicleLocationService vehicleLocationService;
+	private final VehicleGrpcService vehicleGrpcService;
 
 //	@Value("${grpc.port}")
 	Integer grpcPort = 8080;
@@ -20,7 +19,7 @@ public class GrpcServerConfig {
 	@Bean
 	public Server grpcServer() {
 		return ServerBuilder.forPort(grpcPort)
-				.addService(vehicleLocationService)
+				.addService(vehicleGrpcService)
 				.build();
 	}
 

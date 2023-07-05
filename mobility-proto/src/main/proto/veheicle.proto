@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
 package com.moondahoon;
 
 //option java_multiple_files = true;
@@ -8,7 +9,7 @@ service VehicleLocationService {
   rpc Put (PutRequest) returns (PutResponse) {}
   rpc Get (GetRequest) returns (GetResponse) {}
   rpc Search (SearchRequest) returns (SearchResponse) {}
-  rpc History (HistoryRequest) returns (stream HistoryResponse) {}
+  rpc History (HistoryRequest) returns (HistoryResponse) {}
 }
 
 message PutRequest {
@@ -18,8 +19,9 @@ message PutRequest {
 }
 
 message PutResponse {
-  string id = 1;
-  string message = 2;
+  bool success = 1;
+  string id = 2;
+  string message = 3;
 }
 
 message GetRequest {
@@ -30,6 +32,7 @@ message GetResponse {
   string id = 1;
   double latitude = 2;
   double longitude = 3;
+  string timestamp = 4;
 }
 
 message SearchRequest {
@@ -45,18 +48,25 @@ message SearchResponse {
     string id = 1;
     double latitude = 2;
     double longitude = 3;
+    double distance = 4;
+    string timestamp = 5;
   }
 }
 
+
 message HistoryRequest {
   string id = 1;
-  int64 startTime = 2;
-  int64 endTime = 3;
+  string startTime = 2;
+  string endTime = 3;
 }
 
 message HistoryResponse {
-  string id = 1;
-  double latitude = 2;
-  double longitude = 3;
-  int64 timestamp = 4;
+  repeated VehicleHistory history = 1;
+
+  message VehicleHistory {
+    string id = 1;
+    double latitude = 2;
+    double longitude = 3;
+    string timestamp = 4;
+  }
 }

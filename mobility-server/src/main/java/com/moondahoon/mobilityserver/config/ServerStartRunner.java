@@ -1,7 +1,6 @@
-package com.moondahoon.mobility.config;
+package com.moondahoon.mobilityserver.config;
 
 import io.grpc.Server;
-import io.grpc.netty.shaded.io.netty.util.internal.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.ApplicationArguments;
