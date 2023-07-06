@@ -18,7 +18,7 @@ public class GrpcServerConfig {
 
 	@Bean
 	public Server grpcServer() {
-		return ServerBuilder.forPort(grpcPort)
+		return ServerBuilder.forPort(8888)
 				.addService(vehicleGrpcService)
 				.build();
 	}

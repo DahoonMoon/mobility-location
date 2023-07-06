@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
 package com.moondahoon;
-
 //option java_multiple_files = true;
 
 service VehicleLocationService {

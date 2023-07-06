@@ -33,7 +33,6 @@ public class VehicleService {
 		vehicleLocation.setTimestamp(LocalDateTime.now());
 
 		vehicleLocationRepository.save(vehicleLocation);
-//		log.info("{} saved", vehicleLocation.getId());
 	}
 
 	public GetResponseDto getVehicleLocation(GetRequestDto requestDto) {
@@ -66,10 +65,9 @@ public class VehicleService {
 		List<VehicleLocation> vehicleLocationList = vehicleLocationRepository.findByIdAndTimestampBetween(requestDto.getId(),
 				requestDto.getStartTime(), requestDto.getEndTime());
 
-		log.info("here {}", vehicleLocationList.size());
-
 		List<HistoryResponseDto> responseDtoList = new ArrayList<>();
-		vehicleLocationList.forEach(vehicleLocation -> responseDtoList.add(modelMapper.map(vehicleLocation, HistoryResponseDto.class)));
+		vehicleLocationList.forEach(vehicleLocation ->
+				responseDtoList.add(modelMapper.map(vehicleLocation, HistoryResponseDto.class)));
 
 		return responseDtoList;
 	}

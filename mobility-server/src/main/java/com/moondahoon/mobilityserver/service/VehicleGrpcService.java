@@ -1,15 +1,15 @@
 package com.moondahoon.mobilityserver.service;
 
-import com.moondahoon.Veheicle.GetRequest;
-import com.moondahoon.Veheicle.GetResponse;
-import com.moondahoon.Veheicle.HistoryRequest;
-import com.moondahoon.Veheicle.HistoryResponse;
-import com.moondahoon.Veheicle.HistoryResponse.VehicleHistory;
-import com.moondahoon.Veheicle.PutRequest;
-import com.moondahoon.Veheicle.PutResponse;
-import com.moondahoon.Veheicle.SearchRequest;
-import com.moondahoon.Veheicle.SearchResponse;
-import com.moondahoon.Veheicle.SearchResponse.VehicleInfo;
+import com.moondahoon.Veheiclelocation.GetRequest;
+import com.moondahoon.Veheiclelocation.GetResponse;
+import com.moondahoon.Veheiclelocation.HistoryRequest;
+import com.moondahoon.Veheiclelocation.HistoryResponse;
+import com.moondahoon.Veheiclelocation.HistoryResponse.VehicleHistory;
+import com.moondahoon.Veheiclelocation.PutRequest;
+import com.moondahoon.Veheiclelocation.PutResponse;
+import com.moondahoon.Veheiclelocation.SearchRequest;
+import com.moondahoon.Veheiclelocation.SearchResponse;
+import com.moondahoon.Veheiclelocation.SearchResponse.VehicleInfo;
 import com.moondahoon.VehicleLocationServiceGrpc;
 import com.moondahoon.mobilityserver.model.dto.request.GetRequestDto;
 import com.moondahoon.mobilityserver.model.dto.request.HistoryRequestDto;
@@ -19,7 +19,6 @@ import com.moondahoon.mobilityserver.model.dto.response.GetResponseDto;
 import com.moondahoon.mobilityserver.model.dto.response.HistoryResponseDto;
 import com.moondahoon.mobilityserver.model.dto.response.SearchResponseDto;
 import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -85,6 +84,7 @@ public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocati
         }
         responseObserver.onCompleted();
     }
+
 
     @Override
     public void search(SearchRequest request, StreamObserver<SearchResponse> responseObserver) {
