@@ -1,0 +1,9 @@
+grpc:
+  client:
+    vehicle-location-service:
+      address: grpc://localhost:8081
+      negotiation-type: plaintext
+
+logging:
+  level:
+    root: OFF

@@ -1,31 +1,33 @@
 package com.moondahoon.mobilityclient.command.sub;
 
-import com.moondahoon.mobilityclient.service.VehicleClientService;
-import com.moondahoon.mobilityclient.service.VehicleFactory;
+import com.moondahoon.mobilityclient.client.VehicleGrpcClient;
+import com.moondahoon.mobilityclient.client.ClientFactory;
 import java.util.concurrent.Callable;
-import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 
 @CommandLine.Command(
-	name = "get",
-	description = "CLI for gRPC Client Test : Get Vehicle Location Stream Data",
-	mixinStandardHelpOptions = true,
-	requiredOptionMarker = '*',
-	optionListHeading = "%nOptions are:%n"
+		name = "get",
+		description = "Command to Get Location of a Vehicle using gRPC Client(Stream Data)",
+		mixinStandardHelpOptions = true,
+		requiredOptionMarker = '*',
+		optionListHeading = "%nOptions are:%n",
+		sortOptions = false,
+		sortSynopsis = false
 )
 public class GetCommand implements Callable<Integer> {
 
+	VehicleGrpcClient client;
+
 	@CommandLine.Option(
-		names = {"-i", "--id"},
-		required = true,
-		description = "vehicle id"
+			names = {"-i", "--id"},
+			required = true,
+			description = "vehicle id"
 	)
 	private String id;
 
-	VehicleClientService vehicleClientService;
 
-	public GetCommand(){
-		this.vehicleClientService = VehicleFactory.getService();
+	public GetCommand() {
+		this.client = ClientFactory.getClient();
 	}
 
 	final Integer SUCCESS = 0;
@@ -33,8 +35,9 @@ public class GetCommand implements Callable<Integer> {
 
 	@Override
 	public Integer call() throws Exception {
-		String response = vehicleClientService.get(id);
-		System.out.println(response);
+		client.get(id);
+		client.shutdown();
+
 		return SUCCESS;
 	}
 }

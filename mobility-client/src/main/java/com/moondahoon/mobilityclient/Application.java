@@ -1,14 +1,16 @@
 package com.moondahoon.mobilityclient;
 
-import com.moondahoon.mobilityclient.command.Command;
+import com.moondahoon.mobilityclient.command.MainCommand;
+import com.moondahoon.mobilityclient.exception.ExceptionHandler;
 import picocli.CommandLine;
 
 public class Application {
 
-//    todo : 어플리케이션 실행단 분석
     public static void main(String[] args) {
-        String[] arguments = new String[]{"get", "--id=john"};
-        new CommandLine(new Command()).execute(args);
+        new CommandLine(new MainCommand())
+                .setExecutionExceptionHandler(new ExceptionHandler())
+                .setUsageHelpWidth(100)
+                .execute(args);
     }
 
 }

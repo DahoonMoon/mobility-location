@@ -6,15 +6,15 @@ import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
 @CommandLine.Command(
-		name = "put",
-		description = "Command to Save the Location of a Vehicle using gRPC Client(Unary Data)",
+		name = "history",
+		description = "Command to Get Vehicle Location Stream Data using gRPC Client(Unary Data)",
 		mixinStandardHelpOptions = true,
 		requiredOptionMarker = '*',
 		optionListHeading = "%nOptions are:%n",
 		sortOptions = false,
 		sortSynopsis = false
 )
-public class PutCommand implements Callable<Integer> {
+public class HistoryCommand implements Callable<Integer> {
 
 	VehicleGrpcClient client;
 
@@ -27,23 +27,23 @@ public class PutCommand implements Callable<Integer> {
 	private String id;
 
 	@CommandLine.Option(
-			names = {"-x", "--latitude"},
+			names = {"-s", "--start"},
 			required = true,
-			description = "latitude",
+			description = "start time",
 			order = 2
 	)
-	private String latitude;
+	private String startTime;
 
 	@CommandLine.Option(
-			names = {"-y", "--longitude"},
+			names = {"-e", "--end"},
 			required = true,
-			description = "longitude",
+			description = "end time",
 			order = 3
 	)
-	private String longitude;
+	private String endTime;
 
 
-	public PutCommand() {
+	public HistoryCommand() {
 		this.client = ClientFactory.getClient();
 	}
 
@@ -52,7 +52,7 @@ public class PutCommand implements Callable<Integer> {
 
 	@Override
 	public Integer call() throws Exception {
-		client.put(id, latitude, longitude);
+		client.history(id, startTime, endTime);
 		client.shutdown();
 		return SUCCESS;
 	}
