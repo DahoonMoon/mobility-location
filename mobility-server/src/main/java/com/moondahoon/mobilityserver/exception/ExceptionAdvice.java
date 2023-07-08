@@ -5,11 +5,11 @@ import net.devh.boot.grpc.server.advice.GrpcAdvice;
 import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
 
 @GrpcAdvice
-public class GrpcExceptionAdvice {
+public class ExceptionAdvice {
 
 	@GrpcExceptionHandler
 	public Status handleInvalidArgument(IllegalArgumentException e) {
-		return Status.INVALID_ARGUMENT.withDescription("Invalid Args").withCause(e);
+		return Status.INVALID_ARGUMENT.withDescription(e.getMessage()).withCause(e);
 	}
 
 //	@GrpcExceptionHandler(ResourceNotFoundException.class)

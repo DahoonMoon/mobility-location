@@ -13,6 +13,7 @@ import com.moondahoon.mobilityclient.model.dto.response.HistoryResponseDto.Vehic
 import com.moondahoon.mobilityclient.model.dto.response.PutResponseDto;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,10 +21,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Value;
+import picocli.CommandLine;
 
 
 public class VehicleGrpcClient {
-
 	private final ManagedChannel channel;
 //	sync
 	private final VehicleLocationServiceGrpc.VehicleLocationServiceBlockingStub blockingStub;
@@ -37,7 +39,6 @@ public class VehicleGrpcClient {
 				.build();
 		this.blockingStub = VehicleLocationServiceGrpc.newBlockingStub(channel);
 		this.stub = VehicleLocationServiceGrpc.newStub(channel);
-
 	}
 
 	public void shutdown() throws InterruptedException {
@@ -76,7 +77,7 @@ public class VehicleGrpcClient {
 
 			@Override
 			public void onError(Throwable t) {
-				System.out.println("onError");
+				System.out.println(CommandLine.Help.Ansi.AUTO.string(String.format("@|bold,red ERROR : %s |@", t.getMessage())));
 			}
 
 			@Override
