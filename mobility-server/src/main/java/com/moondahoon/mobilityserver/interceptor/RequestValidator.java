@@ -1,4 +1,4 @@
-package com.moondahoon.mobilityserver.validator;
+package com.moondahoon.mobilityserver.interceptor;
 
 import com.moondahoon.Veheiclelocation.GetRequest;
 import com.moondahoon.Veheiclelocation.HistoryRequest;

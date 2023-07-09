@@ -1,4 +1,4 @@
-package com.moondahoon.mobilityserver.validator;
+package com.moondahoon.mobilityserver.interceptor;
 
 import com.moondahoon.Veheiclelocation.GetRequest;
 import com.moondahoon.Veheiclelocation.HistoryRequest;
@@ -11,7 +11,6 @@ import io.grpc.ServerCall.Listener;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
