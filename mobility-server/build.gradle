@@ -27,7 +27,7 @@ dependencies {
 //    (grpc 관련 lib 포함하고 있음)
 
 //    grpc interface
-    implementation project(':mobility-proto')
+    implementation project(':mobility-protobuf-interface')
     implementation 'com.google.protobuf:protobuf-java-util:3.23.1'
 
 //    db

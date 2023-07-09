@@ -1,4 +1,4 @@
 rootProject.name = 'mobility'
-include 'mobility-proto'
+include 'mobility-protobuf-interface'
 include 'mobility-server'
 include 'mobility-client'
