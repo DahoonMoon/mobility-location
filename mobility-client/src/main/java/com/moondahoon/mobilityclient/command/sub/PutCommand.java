@@ -24,7 +24,7 @@ public class PutCommand implements Callable<Integer> {
 			description = "vehicle id",
 			order = 1
 	)
-	private String id;
+	public String id;
 
 	@CommandLine.Option(
 			names = {"-x", "--latitude"},
@@ -32,7 +32,7 @@ public class PutCommand implements Callable<Integer> {
 			description = "latitude",
 			order = 2
 	)
-	private String latitude;
+	public String latitude;
 
 	@CommandLine.Option(
 			names = {"-y", "--longitude"},
@@ -40,7 +40,7 @@ public class PutCommand implements Callable<Integer> {
 			description = "longitude",
 			order = 3
 	)
-	private String longitude;
+	public String longitude;
 
 
 	public PutCommand() {

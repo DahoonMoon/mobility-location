@@ -44,6 +44,12 @@ public class VehicleGrpcClient {
 		this.stub = VehicleLocationServiceGrpc.newStub(channel);
 	}
 
+	public VehicleGrpcClient(ManagedChannel channel) {
+		this.channel = channel;
+		this.blockingStub = VehicleLocationServiceGrpc.newBlockingStub(channel);
+		this.stub = VehicleLocationServiceGrpc.newStub(channel);
+	}
+
 	public void shutdown() throws InterruptedException {
 		channel.shutdown().awaitTermination(60, TimeUnit.SECONDS);
 	}

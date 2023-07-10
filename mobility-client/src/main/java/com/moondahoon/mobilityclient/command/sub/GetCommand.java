@@ -23,7 +23,7 @@ public class GetCommand implements Callable<Integer> {
 			required = true,
 			description = "vehicle id"
 	)
-	private String id;
+	public String id;
 
 
 	public GetCommand() {
