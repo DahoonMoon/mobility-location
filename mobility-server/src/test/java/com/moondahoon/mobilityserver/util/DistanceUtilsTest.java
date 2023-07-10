@@ -1,24 +1,27 @@
 package com.moondahoon.mobilityserver.util;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import org.assertj.core.data.Percentage;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class DistanceUtilsTest {
 
+	@DisplayName("두 좌표 사이 거리 계산 테스트")
 	@Test
 	void getDistanceTest(){
+//		given
+		BigDecimal latitudeSeoul = BigDecimal.valueOf(37.541);
+		BigDecimal longitudeSeoul = BigDecimal.valueOf(126.986);
+		BigDecimal latitudeBusan = BigDecimal.valueOf(35.180);
+		BigDecimal longitudeBusan = BigDecimal.valueOf(129.076);
 
-		BigDecimal x1 = BigDecimal.valueOf(0);
-		BigDecimal y1 = BigDecimal.valueOf(0);
-		BigDecimal x2 = BigDecimal.valueOf(1);
-		BigDecimal y2 = BigDecimal.valueOf(10);
+//		when
+		BigDecimal distance = DistanceUtils.calculateDistance(latitudeSeoul, longitudeSeoul, latitudeBusan, longitudeBusan);
 
-		BigDecimal distance = DistanceUtils.calculateDistance(x1, y1, x2, y2);
-
-		System.out.println(distance);
-
+//		then
+		assertThat(distance).isCloseTo(BigDecimal.valueOf(320000), Percentage.withPercentage(1));
 	}
-
 }

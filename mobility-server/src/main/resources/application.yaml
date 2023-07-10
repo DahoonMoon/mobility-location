@@ -2,3 +2,5 @@ grpc:
   server:
     port: 8081
     inProcessName: vehicle-location-server
+  message:
+    max-size: 100

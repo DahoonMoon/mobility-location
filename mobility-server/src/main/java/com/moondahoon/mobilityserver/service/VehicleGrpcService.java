@@ -25,16 +25,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.beans.factory.annotation.Value;
 
 @Slf4j
+@Setter
 @GrpcService
 @RequiredArgsConstructor
 public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocationServiceImplBase {
 
     private final VehicleService vehicleService;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    @Value("${grpc.message.max-size}")
+    int maxMessages;
 
     @Override
     public void put(PutRequest request, StreamObserver<PutResponse> responseObserver) {
@@ -62,7 +67,9 @@ public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocati
 
         GetRequestDto requestDto = new GetRequestDto(request.getId());
 
-        while (true) {
+        int sentMessages = 0;
+
+        while (sentMessages < maxMessages) {
             GetResponseDto response = vehicleService.getVehicleLocation(requestDto);
 
             responseObserver.onNext(GetResponse.newBuilder()
@@ -72,12 +79,13 @@ public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocati
                 .setTimestamp(response.getTimestamp().format(formatter))
                 .build());
 
+            sentMessages++;
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 responseObserver.onError(Status.INTERNAL
-                    .withDescription("Error: interrupted during sleeping.")
+                    .withDescription("ERROR : interrupted during sleeping.")
                     .asRuntimeException());
                 break;
             }
@@ -95,7 +103,9 @@ public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocati
             .radius(BigDecimal.valueOf(request.getRadius()))
             .build();
 
-        while (true) {
+        int sentMessages = 0;
+
+        while (sentMessages < maxMessages) {
             List<SearchResponseDto> responseDtoList = vehicleService.searchVehicleLocation(requestDto);
 
             SearchResponse.Builder searchResponseBuilder = SearchResponse.newBuilder();
@@ -110,12 +120,14 @@ public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocati
             SearchResponse searchResponse = searchResponseBuilder.build();
 
             responseObserver.onNext(searchResponse);
+
+            sentMessages++;
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 responseObserver.onError(Status.INTERNAL
-                    .withDescription("Error: interrupted during sleeping.")
+                    .withDescription("ERROR : interrupted during sleeping.")
                     .asRuntimeException());
                 break;
             }
@@ -142,7 +154,6 @@ public class VehicleGrpcService extends VehicleLocationServiceGrpc.VehicleLocati
             .setTimestamp(res.getTimestamp().format(formatter))
             .build())
         );
-
         HistoryResponse historyResponse = historyResponseBuilder.build();
 
         responseObserver.onNext(historyResponse);

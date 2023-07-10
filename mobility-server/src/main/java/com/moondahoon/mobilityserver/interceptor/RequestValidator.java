@@ -9,11 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class RequestValidator {
-    private static final String ID_NOT_NULL_NOT_EMPTY_DESCRIPTION = "ID must Not Null & Not Empty";
-    private static final String LATITUDE_RANGE_DESCRIPTION = "Latitude 범위 : -90 < Latitude < 90";
-    private static final String LONGITUDE_RANGE_DESCRIPTION = "Longitude 범위 : -180 < Longitude < 180";
-    private static final String RADIUS_RANGE_DESCRIPTION = "Radius 범위 : 0 <= Radius";
-    private static final String DATETIME_REGEX_DESCRIPTION = "요청 날짜 형식 : yyyy-MM-dd HH:mm:ss";
+    public static final String ID_NOT_NULL_NOT_EMPTY_DESCRIPTION = "ID must Not Null & Not Empty";
+    public static final String LATITUDE_RANGE_DESCRIPTION = "Latitude 범위 : -90 < Latitude < 90";
+    public static final String LONGITUDE_RANGE_DESCRIPTION = "Longitude 범위 : -180 < Longitude < 180";
+    public static final String RADIUS_RANGE_DESCRIPTION = "Radius 범위 : 0 <= Radius";
+    public static final String DATETIME_REGEX_DESCRIPTION = "요청 날짜 형식 : yyyy-MM-dd HH:mm:ss";
 
     public static void validatePutRequest(PutRequest request) {
         if (request.getId() == null || request.getId().isEmpty()) {
