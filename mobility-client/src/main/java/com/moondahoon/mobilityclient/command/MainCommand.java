@@ -21,7 +21,6 @@ import picocli.CommandLine;
 		}
 )
 public class MainCommand implements Callable<Integer> {
-//todo : success, failure 등 picoCLI 공부 추가
 
 	final Integer SUCCESS = 0;
 	final Integer FAILURE = 1;

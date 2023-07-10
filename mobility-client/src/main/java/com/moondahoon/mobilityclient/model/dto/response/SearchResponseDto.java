@@ -2,8 +2,7 @@ package com.moondahoon.mobilityclient.model.dto.response;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.moondahoon.mobilityclient.model.dto.response.HistoryResponseDto.VehicleHistory;
-import com.moondahoon.mobilityclient.util.LocalDataTimeAdapter;
+import com.moondahoon.mobilityclient.util.LocalDateTimeAdapter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,7 +36,7 @@ public class SearchResponseDto {
 
 	public String toJson() {
 		Gson gson = new GsonBuilder()
-				.registerTypeAdapter(LocalDateTime.class, new LocalDataTimeAdapter())
+				.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 				.create();
 		return gson.toJson(this);
 	}

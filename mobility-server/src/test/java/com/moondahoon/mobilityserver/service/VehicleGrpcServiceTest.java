@@ -87,7 +87,7 @@ class VehicleGrpcServiceTest {
 		PutResponse response = blockingStub.put(request);
 
 //		then
-		assertThat(response.getSuccess()).isEqualTo(true);
+		assertThat(response.getSuccess()).isTrue();
 		assertThat(response.getId()).isEqualTo("1");
 		assertThat(response.getMessage()).isEqualTo("saved");
 	}

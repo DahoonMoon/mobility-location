@@ -2,7 +2,7 @@ package com.moondahoon.mobilityclient.model.dto.response;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.moondahoon.mobilityclient.util.LocalDataTimeAdapter;
+import com.moondahoon.mobilityclient.util.LocalDateTimeAdapter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class GetResponseDto {
 
 	public String toJson(){
 		Gson gson = new GsonBuilder()
-				.registerTypeAdapter(LocalDateTime.class, new LocalDataTimeAdapter())
+				.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 				.create();
 		return gson.toJson(this);
 	}
